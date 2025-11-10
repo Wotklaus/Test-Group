@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -88,36 +88,35 @@
 </head>
 <body>
   <div class="container">
-    <div id="title" class="title">Cargando título...</div>
-    <div id="contenido" class="msg">Cargando mensaje...</div>
+    <div id="title" class="title">Loading title...</div>
+    <div id="contenido" class="msg">Loading message...</div>
     
-    <!-- Botón para estudiantes -->
+    <!-- Button for students -->
     <button id="studentsBtn" class="btn-primary">Show Students</button>
     <ul id="studentsResults" class="results-list"></ul>
 
-    <!-- Botón para matriculas (enrollments) -->
+    <!-- Button for enrollments -->
     <button id="enrollmentsBtn" class="btn-primary">Show Enrollments</button>
     <ul id="enrollmentsResults" class="results-list"></ul>
-
     
   </div>
   <script>
-    // Contentful
+    // Fetch Contentful message
     fetch('/api/message')
       .then(res => res.json())
       .then(data => {
-        document.getElementById('title').textContent = data.title ?? "Sin título";
-        document.getElementById('contenido').textContent = data.text ?? "No hay mensaje";
+        document.getElementById('title').textContent = data.title ?? "No title";
+        document.getElementById('contenido').textContent = data.text ?? "No message";
       })
       .catch(e => {
-        document.getElementById('contenido').textContent = "Error cargando el mensaje";
+        document.getElementById('contenido').textContent = "There was an error loading the message";
       });
 
     // Supabase - Students
     document.getElementById('studentsBtn').addEventListener('click', function() {
       const btn = this;
       btn.disabled = true;
-      btn.textContent = "Cargando...";
+      btn.textContent = "Loading...";
       fetch('/api/students')
         .then(response => response.json())
         .then(data => {
@@ -128,16 +127,16 @@
               ).join('');
           } else {
             document.getElementById('studentsResults').innerHTML =
-              '<li>No hay estudiantes en Supabase</li>';
+              '<li>No students found in Supabase</li>';
           }
         })
         .catch(err => {
           document.getElementById('studentsResults').innerHTML =
-            '<li style="color:#a30016">Error al consultar Supabase</li>';
+            '<li style="color:#a30016">Error fetching students from Supabase</li>';
         })
         .finally(() => {
           btn.disabled = false;
-          btn.textContent = 'Mostrar Estudiantes';
+          btn.textContent = 'Show Students';
         });
     });
 
@@ -145,7 +144,7 @@
     document.getElementById('enrollmentsBtn').addEventListener('click', function() {
       const btn = this;
       btn.disabled = true;
-      btn.textContent = "Cargando...";
+      btn.textContent = "Loading...";
       fetch('/api/enrollments')
         .then(response => response.json())
         .then(data => {
@@ -161,16 +160,16 @@
               ).join('');
           } else {
             document.getElementById('enrollmentsResults').innerHTML =
-              '<li>No hay matrículas en Supabase</li>';
+              '<li>No enrollments found in Supabase</li>';
           }
         })
         .catch(err => {
           document.getElementById('enrollmentsResults').innerHTML =
-            '<li style="color:#a30016">Error al consultar enrollments</li>';
+            '<li style="color:#a30016">Error fetching enrollments</li>';
         })
         .finally(() => {
           btn.disabled = false;
-          btn.textContent = 'Mostrar Matrículas';
+          btn.textContent = 'Show Enrollments';
         });
     });
   </script>
