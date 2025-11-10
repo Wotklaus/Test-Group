@@ -68,7 +68,7 @@ app.get('/api/enrollments', async (req, res) => {
   res.json(data);
 });
 
-// Get enrollments with related student data
+// Get enrollments with related student data - xd
 app.get('/api/enrollments/details', async (req, res) => {
   const { data, error } = await supabase
     .from('enrollments')
