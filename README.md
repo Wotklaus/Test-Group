@@ -102,4 +102,4 @@ docker run --env-file .env -p 3000:3000 wotklaus86682/test-group:latest
 
 ## Author
 
-- Niklaus (Wotklaus)
+- Niklaus (Wotklaus) !!
