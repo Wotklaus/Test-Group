@@ -57,38 +57,46 @@ SUPABASE_ANON_KEY=...
 ```bash
 npm start
 ```
-Then open your browser: [http://localhost:3000](http://localhost:3000)
+Open your browser: [http://localhost:3000](http://localhost:3000)
 
 ---
 
 ## Running with Docker
 
 ```bash
-docker build -t testgroup-demo .
-docker run --env-file .env -p 3000:3000 testgroup-demo
+docker build -t wotklaus86682/test-group:latest .
+docker run --env-file .env -p 3000:3000 wotklaus86682/test-group:latest
 ```
 
 ---
 
-## Deployment
+## Deployment (DockerHub)
 
-- The project is ready to deploy on any platform that supports Docker (Railway, Render, etc.).
-- Automatic builds from GitHub are also supported.
+The image for this project is publicly available at:  
+**[https://hub.docker.com/r/wotklaus86682/test-group](https://hub.docker.com/r/wotklaus86682/test-group)**
+
+To run this image from DockerHub anywhere:
+
+```bash
+docker pull wotklaus86682/test-group:latest
+docker run --env-file .env -p 3000:3000 wotklaus86682/test-group:latest
+```
+*Make sure you provide the proper `.env` file for Contentful and Supabase configuration.*
 
 ---
 
 ## Observations
 
-- I can modify the backend (`index.js`) to query other Supabase tables if needed.
-- I enabled policies in Supabase to allow public read access to the necessary tables used by the application.
+- The backend (`index.js`) can be easily modified to query other Supabase tables if needed.
+- Public read policies were enabled in Supabase for the tables used by the application.
 
 ---
 
 ## Notes for Review
 
 - The main page's title and message can be edited from Contentful (https://www.contentful.com/).
-- By using the frontend buttons, you can query students ("students") and enrollments ("enrollments") directly from Supabase.
-- The frontend is fully functional and responsive.
+- The web frontend allows querying students ("students") and enrollments ("enrollments") directly from Supabase with just a click.
+- The application is fully responsive and functional.
 
 ---
 
