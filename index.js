@@ -3,6 +3,7 @@ const contentful = require('contentful');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 const http = require('http');
+const fs = require('fs');
 
 const app = express();
 
@@ -65,6 +66,20 @@ app.get('/api/serverinfo', (req, res) => {
   }).on('error', () => {
     // Si falla (no EC2, sin IP pública, etc), responde N/A
     res.json({ publicIp: 'N/A' });
+  });
+});
+
+// ==== IP PRIVADA ENDPOINT ====
+app.get('/api/privateip', (req, res) => {
+  fs.readFile('/etc/hostname', 'utf8', (err, hostname) => {
+    if (err) return res.json({ privateIp: '(no disponible)' });
+    const match = hostname.match(/^ip-(\d+)-(\d+)-(\d+)-(\d+)/);
+    if (match) {
+      const ip = `${match[1]}.${match[2]}.${match[3]}.${match[4]}`;
+      res.json({ privateIp: ip });
+    } else {
+      res.json({ privateIp: hostname.trim() });
+    }
   });
 });
 

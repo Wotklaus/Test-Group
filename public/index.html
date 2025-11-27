@@ -142,6 +142,17 @@
           "No se pudo obtener la IP pública";
       });
 
+    // Fetch private IP and append it in the footer
+    fetch('/api/privateip')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('instancia').textContent +=
+          `\nPrivate IP EC2: ${data.privateIp ?? '(n/a)'}`;
+      })
+      .catch(e => {
+        document.getElementById('instancia').textContent +=
+          "\nNo se pudo obtener la IP privada";
+      });
     /*
     // Supabase - Students
     document.getElementById('studentsBtn').addEventListener('click', function() {
