@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Contentful + Supabase Demo</title>
+  <title>Web3</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto&display=swap" rel="stylesheet">
   <style>
     body {
@@ -16,18 +17,20 @@
       justify-content: center;
       margin: 0;
     }
+
     .container {
       background: #fff;
       padding: 40px 30px;
       border-radius: 22px;
-      box-shadow: 0 10px 40px 0 rgba(44,72,171,0.10),
-                  0 2px 4px 0 rgba(44,72,171,0.06);
+      box-shadow: 0 10px 40px 0 rgba(44, 72, 171, 0.10),
+        0 2px 4px 0 rgba(44, 72, 171, 0.06);
       display: flex;
       flex-direction: column;
       align-items: center;
       max-width: 450px;
       width: 100%;
     }
+
     .msg {
       font-size: 1.2em;
       color: #393b3f;
@@ -35,6 +38,7 @@
       margin: 18px 0 0 0;
       text-align: center;
     }
+
     .title {
       font-family: 'Montserrat', 'Roboto', Arial, sans-serif;
       font-size: 2em;
@@ -44,6 +48,7 @@
       margin-bottom: 0.5em;
       text-align: center;
     }
+
     .footer {
       font-size: 0.98em;
       color: #4972b8;
@@ -51,6 +56,7 @@
       opacity: 0.78;
       text-align: center;
     }
+
     .btn-primary {
       background: #65bdc5;
       color: #fff;
@@ -63,9 +69,11 @@
       cursor: pointer;
       transition: background 0.19s;
     }
+
     .btn-primary:hover {
       background: #183978;
     }
+
     .results-list {
       margin: 10px 0 0 0;
       padding: 0;
@@ -75,23 +83,34 @@
       text-align: left;
       width: 100%;
     }
+
     .results-list li {
       padding: 6px 0;
       border-bottom: 1px solid #e3eafe;
     }
+
     @media (max-width: 600px) {
-      .container { padding: 24px 8px; }
-      .msg { font-size: 1.08em; }
-      .title { font-size: 1.2em; }
+      .container {
+        padding: 24px 8px;
+      }
+
+      .msg {
+        font-size: 1.08em;
+      }
+
+      .title {
+        font-size: 1.2em;
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <div id="title" class="title">Loading title...</div>
     <div id="contenido" class="msg">Loading message...</div>
     <div id="instancia" class="footer"></div>
-    
+
     <!--
     <button id="studentsBtn" class="btn-primary">Show Students</button>
     <ul id="studentsResults" class="results-list"></ul>
@@ -106,11 +125,21 @@
       .then(data => {
         document.getElementById('title').textContent = data.title ?? "No title";
         document.getElementById('contenido').textContent = data.text ?? "No message";
-        document.getElementById('instancia').textContent =
-          `Instancia: ${data.hostname ?? '(desconocida)'} — IP: ${data.localIp ?? '(n/a)'}`;
       })
       .catch(e => {
         document.getElementById('contenido').textContent = "There was an error loading the message";
+      });
+
+    // Fetch public IP and show it in the footer
+    fetch('/api/serverinfo')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('instancia').textContent =
+          `Public IP EC2: ${data.publicIp ?? '(n/a)'}`;
+      })
+      .catch(e => {
+        document.getElementById('instancia').textContent =
+          "No se pudo obtener la IP pública";
       });
 
     /*
@@ -177,4 +206,5 @@
     */
   </script>
 </body>
+
 </html>

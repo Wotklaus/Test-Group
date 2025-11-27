@@ -2,7 +2,7 @@ const express = require('express');
 const contentful = require('contentful');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
-const os = require('os');
+const http = require('http');
 
 const app = express();
 
@@ -32,24 +32,18 @@ function extractTextFromRichText(richTextField) {
 app.get('/api/message', async (req, res) => {
   try {
     const entries = await client.getEntries();
-
     if (entries.items.length > 0 && entries.items[0].fields) {
       const fields = entries.items[0].fields;
       const title = fields.title ? extractTextFromRichText(fields.title) : undefined;
       const message = fields.message;
-
       res.json({
         title: title || "No title",
-        text: message || "No message available in Contentful...",
-        hostname: os.hostname(),
-        localIp: req.socket.localAddress
+        text: message || "No message available in Contentful..."
       });
     } else {
       res.json({
         title: "No title",
-        text: "No message available in Contentful...",
-        hostname: os.hostname(),
-        localIp: req.socket.localAddress
+        text: "No message available in Contentful..."
       });
     }
   } catch (err) {
@@ -57,6 +51,22 @@ app.get('/api/message', async (req, res) => {
   }
 });
 
+// ==== ENDPOINT ====
+
+app.get('/api/serverinfo', (req, res) => {
+  // Hace una petición interna al metadata server de AWS (solo disponible en EC2)
+  http.get('http://169.254.169.254/latest/meta-data/public-ipv4', (response) => {
+    let publicIp = '';
+    response.on('data', (chunk) => { publicIp += chunk; }); // Junta los datos recibidos
+    response.on('end', () => {
+      // Cuando termina, responde únicamente la IP pública
+      res.json({ publicIp });
+    });
+  }).on('error', () => {
+    // Si falla (no EC2, sin IP pública, etc), responde N/A
+    res.json({ publicIp: 'N/A' });
+  });
+});
 
 // ==== SUPABASE ENDPOINTS ====
 
