@@ -3,7 +3,6 @@ const contentful = require('contentful');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 const os = require('os');
-const http = require('http');
 
 const app = express();
 
@@ -29,37 +28,30 @@ function extractTextFromRichText(richTextField) {
   }
 }
 
-// ⚡️ Function to get EC2 public IP from AWS metadata service
-function getEc2PublicIp(callback) {
-  http.get('http://169.254.169.254/latest/meta-data/public-ipv4', (res) => {
-    let ip = '';
-    res.on('data', chunk => ip += chunk);
-    res.on('end', () => callback(ip));
-  }).on('error', (err) => {
-    callback('N/A');
-  });
-}
-
-// ==== CONTENTFUL ENDPOINT ====
 // ==== CONTENTFUL ENDPOINT ====
 app.get('/api/message', async (req, res) => {
   try {
     const entries = await client.getEntries();
-    let fields = (entries.items.length > 0 && entries.items[0].fields) ? entries.items[0].fields : {};
-    const title = fields.title ? extractTextFromRichText(fields.title) : undefined;
-    const message = fields.message;
 
-    // Get EC2 public IP, then respond with JSON
-    getEc2PublicIp((publicIp) => {
+    if (entries.items.length > 0 && entries.items[0].fields) {
+      const fields = entries.items[0].fields;
+      const title = fields.title ? extractTextFromRichText(fields.title) : undefined;
+      const message = fields.message;
+
       res.json({
         title: title || "No title",
         text: message || "No message available in Contentful...",
         hostname: os.hostname(),
-        localIp: req.socket.localAddress,
-        ec2PublicIp: publicIp // <-- IP pública real de la instancia EC2
+        localIp: req.socket.localAddress
       });
-    });
-
+    } else {
+      res.json({
+        title: "No title",
+        text: "No message available in Contentful...",
+        hostname: os.hostname(),
+        localIp: req.socket.localAddress
+      });
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
