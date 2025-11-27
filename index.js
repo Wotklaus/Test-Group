@@ -2,6 +2,7 @@ const express = require('express');
 const contentful = require('contentful');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
+const os = require('os');
 
 const app = express();
 
@@ -39,18 +40,23 @@ app.get('/api/message', async (req, res) => {
 
       res.json({
         title: title || "No title",
-        text: message || "No message available in Contentful..."
+        text: message || "No message available in Contentful...",
+        hostname: os.hostname(),
+        localIp: req.socket.localAddress
       });
     } else {
       res.json({
         title: "No title",
-        text: "No message available in Contentful..."
+        text: "No message available in Contentful...",
+        hostname: os.hostname(),
+        localIp: req.socket.localAddress
       });
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 // ==== SUPABASE ENDPOINTS ====
 

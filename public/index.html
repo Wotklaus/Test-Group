@@ -90,6 +90,7 @@
   <div class="container">
     <div id="title" class="title">Loading title...</div>
     <div id="contenido" class="msg">Loading message...</div>
+    <div id="instancia" class="footer"></div>
     
     <!--
     <button id="studentsBtn" class="btn-primary">Show Students</button>
@@ -105,6 +106,8 @@
       .then(data => {
         document.getElementById('title').textContent = data.title ?? "No title";
         document.getElementById('contenido').textContent = data.text ?? "No message";
+        document.getElementById('instancia').textContent =
+          `Instancia: ${data.hostname ?? '(desconocida)'} — IP: ${data.localIp ?? '(n/a)'}`;
       })
       .catch(e => {
         document.getElementById('contenido').textContent = "There was an error loading the message";
