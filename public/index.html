@@ -91,14 +91,12 @@
     <div id="title" class="title">Loading title...</div>
     <div id="contenido" class="msg">Loading message...</div>
     
-    <!-- Button for students -->
+    <!--
     <button id="studentsBtn" class="btn-primary">Show Students</button>
     <ul id="studentsResults" class="results-list"></ul>
-
-    <!-- Button for enrollments -->
     <button id="enrollmentsBtn" class="btn-primary">Show Enrollments</button>
     <ul id="enrollmentsResults" class="results-list"></ul>
-    
+    -->
   </div>
   <script>
     // Fetch Contentful message
@@ -112,6 +110,7 @@
         document.getElementById('contenido').textContent = "There was an error loading the message";
       });
 
+    /*
     // Supabase - Students
     document.getElementById('studentsBtn').addEventListener('click', function() {
       const btn = this;
@@ -172,6 +171,7 @@
           btn.textContent = 'Show Enrollments';
         });
     });
+    */
   </script>
 </body>
 </html>

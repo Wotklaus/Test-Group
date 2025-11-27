@@ -2,6 +2,7 @@
   "name": "testcontenful",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,6 +13,9 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.81.0",
     "contentful": "^11.8.11",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "pptxgenjs": "^4.0.1",
+    "puppeteer": "^24.30.0",
+    "sharp": "^0.34.5"
   }
 }
