@@ -24,7 +24,7 @@ jobs:
           push: true
           tags: wotklaus86682/test-group:latest
 
-      # 🚀 CONFIGURAR AWS CLI
+      
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -33,7 +33,7 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
 
-      # 🚀 ACTUALIZAR INSTANCIAS AWS AUTOMÁTICAMENTE
+    
       - name: Refresh AWS Auto Scaling Group
         run: |
           echo "Starting instance refresh for Auto Scaling Group..."
@@ -42,7 +42,7 @@ jobs:
             --preferences MinHealthyPercentage=50,InstanceWarmup=300
           echo "Instance refresh initiated successfully!"
 
-      # 🚀 VERIFICAR ESTADO DEL REFRESH
+     
       - name: Check refresh status
         run: |
           echo "Checking refresh status..."
