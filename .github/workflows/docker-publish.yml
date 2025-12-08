@@ -20,6 +20,33 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: . 
           push: true
           tags: wotklaus86682/test-group:latest
+
+      # 🚀 CONFIGURAR AWS CLI
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets. AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
+
+      # 🚀 ACTUALIZAR INSTANCIAS AWS AUTOMÁTICAMENTE
+      - name: Refresh AWS Auto Scaling Group
+        run: |
+          echo "Starting instance refresh for Auto Scaling Group..."
+          aws autoscaling start-instance-refresh \
+            --auto-scaling-group-name docker-auto-scaling-group \
+            --preferences MinHealthyPercentage=50,InstanceWarmup=300
+          echo "Instance refresh initiated successfully!"
+
+      # 🚀 VERIFICAR ESTADO DEL REFRESH
+      - name: Check refresh status
+        run: |
+          echo "Checking refresh status..."
+          aws autoscaling describe-instance-refreshes \
+            --auto-scaling-group-name docker-auto-scaling-group \
+            --query 'InstanceRefreshes[0].[Status,PercentageComplete]' \
+            --output table
