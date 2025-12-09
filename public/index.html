@@ -135,7 +135,7 @@
       .then(res => res.json())
       .then(data => {
         document.getElementById('instancia').textContent =
-          `Public IP EC2 prueba: ${data.publicIp ?? '(n/a)'}`;
+          `Public IP EC2 evaluacion: ${data.publicIp ?? '(n/a)'}`;
       })
       .catch(e => {
         document.getElementById('instancia').textContent =
@@ -147,7 +147,7 @@
       .then(res => res.json())
       .then(data => {
         document.getElementById('instancia').textContent +=
-          `\nPrivate IP EC2 prueba: ${data.privateIp ?? '(n/a)'}`;
+          `\nPrivate IP EC2 evaluacion: ${data.privateIp ?? '(n/a)'}`;
       })
       .catch(e => {
         document.getElementById('instancia').textContent +=
